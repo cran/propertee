@@ -1,0 +1,106 @@
+---
+title: "Non-binary Treatment Specification"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Non-binary Treatment Specification}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(propertee)
+```
+
+## Binary Treatment
+
+When creating a StudySpecification, handling binary treatment variables is straightforward.
+If the treatment variable is either `numeric` with only values 0/1, or is
+`logical`, then `lmitt()` will estimate a treatment effect of the difference
+between the outcome in the treated group (`1` or `TRUE`) versus the control
+group (`0` or `FALSE`).
+
+### Missing treatment status
+
+In all cases (binary and non-binary), missing values are allowed and any units
+of assignment with missing treatment values are excluded from models fit via
+`lmitt()`.
+
+## Non-binary Treatment
+
+However, the [`_spec()`](../reference/StudySpecification_objects.html) functions can take
+in any (reasonable) form of treatment assignment.
+
+If the treatment variable is a `numeric` with non-binary values, it is treated
+as a continuous treatment effect and `lmitt(y ~ 1, ...` will estimate a single
+coefficient on treatment.
+
+If the treatment variable is a `character`, it is treated as a multi-level
+treatment variable and `lmitt(y ~ 1, ...` will estimate treatment effects
+against a reference category. The reference category is the first level defined
+according to [R's comparison of characters](https://rdrr.io/r/base/Comparison.html).
+
+`factor` and `ordered` objects are tricky to deal with, so while a `StudySpecification` can
+be created with `factor` or `ordered` treatment variables, `lmitt()` will refuse
+to estimate a model unless it is also provided a
+[`dichotomy`](#dichotomzing-a-non-binary-treatment) (see below).
+
+### Dichotomzing a Non-binary Treatment
+
+Studies may offer treatment to units at different times or provide treatment to
+units in varying intensities. Researchers may be interested in estimating treatment
+effects at different times or given a certain threshold of provided treatment, however.
+`propertee` accommodates these wishes by storing the time or intensity of treatment
+for treated units in the  [`StudySpecification`](../reference/StudySpecification_objects.html), then offering
+a `dichotomy=` argument to the weights calculation functions `ett()`/`ate()` and the
+assginment creation function `assigned()` A `dichotomy` is presented as a
+formula, where the left-hand side is a logical statement defining inclusion in
+the treatment group, and the right-hand side is a logical statement defining
+inclusion in the control group. For example, if `dose` represents the intensity
+of a given treatment, we could set a threshold of 200, say, mg:
+
+```{r, eval = FALSE}
+dose > 200 ~ dose <= 200
+```
+
+All units of assignment with `dose` above 200 are treated units,
+and all units of assignment with `dose` of 200 or below are control units.
+
+A `.` can be used to define either group as the inverse of the other. For
+example, the above dichotomy could be defined as either of
+
+```{r, eval = FALSE}
+dose > 200 ~ .
+. ~ dose <= 200
+```
+
+Any units of assignment not assigned to either treatment or control are assumed
+to have `NA` for a treatment status and will be ignored in the estimation of
+treatment effects.
+
+```{r, eval = FALSE}
+dose >= 300 ~ dose <= 100
+```
+
+In this `dichotomy`, units of assignment in the range (100,300) are ignored.
+
+### An Example
+
+```{r}
+data(simdata)
+table(simdata$dose)
+spec1 <- rct_spec(dose ~ uoa(uoa1, uoa2), data = simdata)
+summary(spec1)
+```
+
+```{r}
+head(ate(spec1, data = simdata, dichotomy = dose >= 300 ~ dose <= 100))
+```
+
+```{r}
+head(assigned(spec1, data = simdata, dichotomy = dose >= 300 ~ dose <= 100))
+```
