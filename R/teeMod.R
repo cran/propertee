@@ -161,8 +161,8 @@ estfun.teeMod <- function(x, ...) {
     resids <- stats::residuals(x, type = "working")
     return(mat / replace(resids, is.na(resids), 1) *
              replace(do.call(.rcorrect,
-                             c(list(resids = resids, x = x, model = "itt", type = itt_rcorrect),
-                               dots)), is.na(resids), 0))
+                             c(list(resids = resids, x = x, model = "itt", type = itt_rcorrect, cluster = dots$cls),
+                               dots[setdiff(names(dots), "cls")])), is.na(resids), 0))
   }
 
   ## otherwise, extract/compute the rest of the relevant matrices/quantities
@@ -254,7 +254,7 @@ bread.teeMod <- function(x, ...) .get_tilde_a22_inverse(x, ...)
         efm <- estfun(mod)
         mf_data <- eval(mod$call$data, environment(formula(mod)))
       }
-      if (cluster_cols[1] == "..uoa..") {
+      if ("cluster" %in% names(dots)) cls <- dots$cluster else if (cluster_cols[1] == "..uoa..") {
         cls <- row.names(stats::model.frame(mod, na.action = na.pass))
       } else {
         cls <- Reduce(
@@ -268,26 +268,28 @@ bread.teeMod <- function(x, ...) .get_tilde_a22_inverse(x, ...)
       
       if (inherits(mod, "teeMod")) {
         uoa_cols <- var_names(mod@StudySpecification, "u")
-        if (has_blocks(mod@StudySpecification) &
-            length(setdiff(cluster_cols, uoa_cols)) == 0 &
-            length(setdiff(uoa_cols, cluster_cols)) == 0) {
-          Q_obs <- .sanitize_Q_ids(mod, id_col = cluster_cols)
-          Q_obs_ids <- Q_obs$cluster
-          spec_blocks <- blocks(mod@StudySpecification)
-          uoa_block_ids <- apply(spec_blocks, 1, function(...) paste(..., collapse = ","))
-          small_blocks <- identify_small_blocks(mod@StudySpecification)
-          structure_w_small_blocks <- cbind(
-            mod@StudySpecification@structure,
-            small_block = small_blocks[uoa_block_ids],
-            block_replace_id = apply(spec_blocks, 1,
-                                     function(nms, ...) paste(paste(nms, ..., sep = ""), collapse = ","),
-                                     nms = colnames(spec_blocks))
-          )
-          Q_obs <- .merge_preserve_order(Q_obs, structure_w_small_blocks, by = uoa_cols, all.x = TRUE)
-          na_blocks <- apply(Q_obs[var_names(x@StudySpecification, "b")], 1, function(x) any(is.na(x)))
-          Q_obs$cluster[Q_obs$small_block & !na_blocks] <-
-            Q_obs$block_replace_id[Q_obs$small_block & !na_blocks]
-          cls <- Q_obs$cluster
+        if (has_blocks(mod@StudySpecification)) {
+          if (any(small_blocks <- identify_small_blocks(mod@StudySpecification))) {
+            if (length(setdiff(cluster_cols, uoa_cols)) == 0 &
+                length(setdiff(uoa_cols, cluster_cols)) == 0) {
+              Q_obs <- .sanitize_Q_ids(mod, id_col = cluster_cols)
+              Q_obs_ids <- Q_obs$cluster
+              spec_blocks <- blocks(mod@StudySpecification)
+              uoa_block_ids <- apply(spec_blocks, 1, function(...) paste(..., collapse = ","))
+              structure_w_small_blocks <- cbind(
+                mod@StudySpecification@structure,
+                small_block = small_blocks[uoa_block_ids],
+                block_replace_id = apply(spec_blocks, 1,
+                                         function(nms, ...) paste(paste(nms, ..., sep = ""), collapse = ","),
+                                         nms = colnames(spec_blocks))
+              )
+              Q_obs <- .merge_preserve_order(Q_obs, structure_w_small_blocks, by = uoa_cols, all.x = TRUE)
+              na_blocks <- apply(Q_obs[var_names(x@StudySpecification, "b")], 1, function(x) any(is.na(x)))
+              Q_obs$cluster[Q_obs$small_block & !na_blocks] <-
+                Q_obs$block_replace_id[Q_obs$small_block & !na_blocks]
+              cls <- Q_obs$cluster
+            }
+          }
         }
       }
 
@@ -380,6 +382,8 @@ bread.teeMod <- function(x, ...) .get_tilde_a22_inverse(x, ...)
   cluster_cols <- if (is.null(dots$cluster_cols)) uoa_cols else dots$cluster_cols
   sl <- x$model$`(offset)`
   cmod <- sl@fitted_covariance_model
+  # changing the na.action to exclude returns NA's where rows had NA's; see further details below
+  if (!is.null(cmod$na.action)) class(cmod$na.action) <- "exclude"
   
   # the ordering output by `.order_samples()` is explained in that function's
   # documentation
@@ -389,8 +393,12 @@ bread.teeMod <- function(x, ...) .get_tilde_a22_inverse(x, ...)
   nc <- length(c(id_order$C_in_Q, id_order$C_not_Q))
   
   ## get the unaligned + unextended estimating equations
+  # since we change the na.action to na.exclude for the covariance adjustment model above,
+  # estfun() returns rows filled with NA's for rows with any NA's, and similarly, residuals()
+  # returns NA's. if there are no rows with NA's, estfun() and residuals() return their usual outputs
   phi_r <- stats::residuals(cmod, type = "working") # for teeMod, lm, lmrob this gives desired type = "response"
-  phi <- estfun(cmod) / replace(phi_r, is.na(phi_r), 1) *
+  phi <- sandwich::estfun(cmod)
+  phi <- replace(phi, is.na(phi), 0) / replace(phi_r, is.na(phi_r), 1) *
     replace(do.call(.rcorrect,
                     c(list(resids = phi_r, x = x, model = "cov_adj", type = cov_adj_rcorrect, by = by),
                       dots)), is.na(phi_r), 0)

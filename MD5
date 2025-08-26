@@ -1,9 +1,9 @@
-39e5be7e8833a123fef41e16147370e2 *DESCRIPTION
+e0e32f69da0c1ce998d87e3e01585b18 *DESCRIPTION
 0ed1df0c0a2054d955fe4684c1aec32f *LICENSE
 3bed2d5f00c8ef71832bcdcfa0c15679 *NAMESPACE
-473ada93958ee77ccf12c31a32f2cd8c *NEWS.md
+5fa97544c5da007c13b73c63b7602f28 *NEWS.md
 d95db33c7e152a06a556c7c0bed47af8 *R/SandwichLayer.R
-44a199ae7e0bc3355a5ed6f409ace433 *R/SandwichLayerVariance.R
+70ca035f71ca4138bfedd8460b00ccfe *R/SandwichLayerVariance.R
 0c98adde46a2ff1c20105bf8d99a6d45 *R/StudySpecification.R
 52748d5014957904c174bc596c1f1e5c *R/StudySpecificationAccessors.R
 11cc5575b23a72cef149245df0b3de03 *R/StudySpecificationConverters.R
@@ -11,7 +11,7 @@ d95db33c7e152a06a556c7c0bed47af8 *R/SandwichLayer.R
 6e8368359dad6bb1899216e07cf327c8 *R/StudySpecificationUtilities.R
 f47e7b484f24c7f7d14fc9692d298ff8 *R/WeightedStudySpecification.R
 1e66b03b5f9573897de6411b27d5637a *R/areg.center.R
-d626646d795ea263c92e666e76bdfa02 *R/as.lmitt.R
+40514eabd5e5fc1f76b310a987968d66 *R/as.lmitt.R
 b6db53ad46c3dcc266ee41823071f896 *R/as_data_frame.R
 69d39595030f75ebefbea2324e246b91 *R/assigned.R
 4f35bbec7ea8b7f754ec2f724cad60ab *R/block_center_residuals.R
@@ -33,7 +33,7 @@ d7812213c2c8b6c309788303d88b4ff4 *R/merge_preserve_order.R
 cf4c9af01296d797d3f02978f8785a42 *R/specification_table.R
 af836cff67b57247157618f0ebdc7f94 *R/summary.StudySpecification.R
 afbd28a561c149b7dc4e91e44b22396f *R/summary.teeMod.R
-6ccb580aa9756510a519afb005888201 *R/teeMod.R
+3fbdee5ee61f557d7f4d331648012884 *R/teeMod.R
 94ef1fba0f2375b829a7e84979a27b94 *R/update_by.R
 c3ca20874c2e44a209c4c8f422234d72 *R/validWeights.R
 62813df0f131d29408982db25848f31a *R/weights_exported.R
@@ -49,13 +49,13 @@ fb0f88d69fcc4579ad89b87cad1ed8b4 *data/simdata.rda
 426c1cf344411ab35e2cdfc3398ff87c *data/studentdata.rda
 1607c98975307a4a1f7cd2b3b003faf0 *inst/doc/RDD.R
 556cab1ba386dc730759366c4c1ce0d1 *inst/doc/RDD.Rmd
-38e9ecd6b9f95437a101eefb1e88e5ca *inst/doc/RDD.html
+ce5c0e770e67d3d1aed58d764baf2c22 *inst/doc/RDD.html
 739640ad6dd04dbd65a519587a92626c *inst/doc/intro-to-propertee.R
 2a7a0110c5d81badaa778095ee527ce8 *inst/doc/intro-to-propertee.Rmd
-f2aeb8207e4059856cf325f31254ddbc *inst/doc/intro-to-propertee.html
+e7b1b06f2bd90b41d5671e8bbd13d93b *inst/doc/intro-to-propertee.html
 5302d82129edc50ba3aa05124dc79c66 *inst/doc/non-binary-treatment.R
 20ed1fa92cc73f6596ee8f5c80b2e40a *inst/doc/non-binary-treatment.Rmd
-e11c44e3c5e22346e29bf769a13ec840 *inst/doc/non-binary-treatment.html
+86ec1a8636c128cef265b7ec2fc6b097 *inst/doc/non-binary-treatment.html
 e87492607660d89dc481a733bf14c3f1 *inst/examples/cov_adj.R
 c34dc8b459d026c9a8d6f897dbad7bf0 *man/AssignedAliases.Rd
 7d6712721077d497992afe44cf0b102a *man/GV_data.Rd
@@ -80,7 +80,7 @@ fbc83a474978c5ab13a51b6160fcd624 *man/StudySpecification_summary.Rd
 f662d8b8994f89e5eba9dbdbf12378b6 *man/block_center_residuals.Rd
 a802908d6d4f5f1ce2327ce0f8720623 *man/bread.teeMod.Rd
 cf87054ed48c87324b6f949c6c0eca8b *man/c-WeightedStudySpecification-method.Rd
-8dbce36f70ebc624ae52136a7348a987 *man/cluster_iss.Rd
+8d8b1627c227ab870aaa224736e9d470 *man/cluster_iss.Rd
 f50d496a65db5d976a5270c6eddb8c9b *man/confint.teeMod.Rd
 908da20f9a8254c3aba987aace2cd29d *man/cov_adj.Rd
 448f3cb6ab223b591d59929684a68cbb *man/dot-.uoa...Rd
@@ -96,7 +96,7 @@ f390d265e60d195d6cd7dd25ed28bc68 *man/dot-bin_txt.Rd
 68a71ad82a2618b085a6cf01afc7afe4 *man/dot-check_by.Rd
 82dabcdc3fdf373ab206e11960d2d106 *man/dot-check_df_moderator_estimates.Rd
 c8299e9a8ecae22af3bc207cba25a1d7 *man/dot-check_spec_formula.Rd
-7ffdf9c9052437c9e6bc98e39133487e *man/dot-compute_IK_dof.Rd
+f8deb9e3884d3251919336ae4f6ea359 *man/dot-compute_IK_dof.Rd
 6585886cb89cd2114e8fadf3a70ec05a *man/dot-compute_loo_resids.Rd
 be59fa0574e5d5cad50680505ae86835 *man/dot-confint_lm.Rd
 28fce6e74e7fa222592c54c8437d3570 *man/dot-convert_to_data.frame.Rd
@@ -168,7 +168,7 @@ d410a226b3267ea19dbba402d4b7fee6 *man/weights-WeightedStudySpecification-method.
 925126f35d007a3d95816a8711cd987a *tests/testthat/test.193-no-uoa.R
 d1245744f0ca086152223faf0b51c84a *tests/testthat/test.CovAdjPrediction.R
 c897a175846e441f1c8a750f60387bfd *tests/testthat/test.SandwichLayer.R
-28a2df55581a97bde528f7de927817e6 *tests/testthat/test.SandwichLayerVariance.R
+64b9b7e13232908a59eac5b62320ad88 *tests/testthat/test.SandwichLayerVariance.R
 ca67dc718bdc90f46f4582dbc0020203 *tests/testthat/test.StudySpecification.R
 3298cef08578392a1f49fb8cbcd19b3a *tests/testthat/test.StudySpecificationAccessors.R
 742b5acb66c60c2ea02c06900eada6fd *tests/testthat/test.StudySpecificationAccessors_newdata.R
