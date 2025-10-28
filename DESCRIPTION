@@ -1,5 +1,5 @@
 Package: propertee
-Version: 1.0.1
+Version: 1.0.3
 Title: Standardization-Based Effect Estimation with Optional Prior
         Covariance Adjustment
 Description: The Prognostic Regression Offsets with Propagation of
@@ -55,7 +55,7 @@ Collate: 'StudySpecification.R' 'StudySpecificationAccessors.R'
         'summary.StudySpecification.R' 'summary.teeMod.R' 'update_by.R'
         'validWeights.R' 'weights_internal.R' 'weights_exported.R'
 NeedsCompilation: no
-Packaged: 2025-08-25 13:54:02 UTC; josh
+Packaged: 2025-10-28 15:39:57 UTC; jwass
 Author: Josh Errickson [cre, aut],
   Josh Wasserman [aut],
   Mark Fredrickson [ctb],
@@ -64,4 +64,4 @@ Author: Josh Errickson [cre, aut],
   Ben Hansen [aut]
 Maintainer: Josh Errickson <jerrick@umich.edu>
 Repository: CRAN
-Date/Publication: 2025-08-26 08:30:14 UTC
+Date/Publication: 2025-10-28 16:00:02 UTC

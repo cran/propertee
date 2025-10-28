@@ -12,7 +12,7 @@
 
 <meta name="author" content="propertee Authors" />
 
-<meta name="date" content="2025-08-25" />
+<meta name="date" content="2025-10-28" />
 
 <title>Introduction to propertee</title>
 
@@ -50,9 +50,8 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -63,7 +62,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -341,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Introduction to propertee</h1>
 <h4 class="author">propertee Authors</h4>
-<h4 class="date">2025-08-25</h4>
+<h4 class="date">2025-10-28</h4>
 
 
 
@@ -441,7 +440,7 @@ role.</p>
 <div id="defining-the-studyspecification" class="section level3">
 <h3>Defining the <code>StudySpecification</code></h3>
 <p>The three <code>_spec</code> functions (<code>rct_spec()</code>,
-<code>obj_spec()</code>, and <code>rd_spec()</code>) operate similarly.
+<code>obs_spec()</code>, and <code>rd_spec()</code>) operate similarly.
 The first argument is the most important, and encodes all the
 specification information through the use of a formula. The left-hand
 side of the formula identifies the treatment variable. The right-hand
@@ -628,8 +627,9 @@ normal modeling commands as well.</p>
 <p>If fixed effects for blocks are desired, which can be absorbed away
 to avoid estimating, the <code>absorb=TRUE</code> argument can be
 passed.</p>
-<!-- currently not working due to #210, thus turned off-->
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">lmitt</span>(g1treadss <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> STARplus, <span class="at">specification =</span> spec, <span class="at">absorb =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">lmitt</span>(g1treadss <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> STARplus, <span class="at">specification =</span> spec, <span class="at">absorb =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="co">#&gt;       cond_small.TRUE g1treadss:(Intercept) </span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="co">#&gt;               11.0594              518.8194</span></span></code></pre></div>
 </div>
 </div>
 

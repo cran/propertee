@@ -59,6 +59,6 @@ head(cov_adj(camod, newdata = STARplus))
 lm(g1treadss ~ cond_small, data = STARplus, weights = ate(spec),
    offset = cov_adj(camod))
 
-## ----eval=FALSE---------------------------------------------------------------
-# lmitt(g1treadss ~ 1, data = STARplus, specification = spec, absorb = TRUE)
+## -----------------------------------------------------------------------------
+lmitt(g1treadss ~ 1, data = STARplus, specification = spec, absorb = TRUE)
 
